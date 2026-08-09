@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Isse aap GitHub se manual build bhi trigger kar sakte hain
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,11 +17,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 20
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
       # Key Injection Step: VITE_MISTRAL_API_KEY ko secrets se fetch karke build me inject karega
       - name: Build React App with Vite
