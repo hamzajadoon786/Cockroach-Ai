@@ -17,19 +17,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
-      # Key Injection Step: VITE_MISTRAL_API_KEY ko secrets se fetch karke build me inject karega
       - name: Build React App with Vite
-        env:
-          VITE_MISTRAL_API_KEY: ${{ secrets.VITE_MISTRAL_API_KEY }}
         run: npm run build
 
-      - name: Sync Capacitor Android
-        run: npx cap sync android
+      - name: Setup Capacitor Android
+        run: |
+          npm install @capacitor/android
+          npx cap add android || true
+          npx cap sync android
 
       - name: Setup Java Development Kit (JDK)
         uses: actions/setup-java@v4
@@ -49,5 +49,5 @@ jobs:
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Cockroach-AI-Debug-APK
+          name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
